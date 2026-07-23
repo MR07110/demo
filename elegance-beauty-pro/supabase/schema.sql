@@ -1,5 +1,5 @@
 -- ===========================================================================
--- ELEGANCE BEAUTY PRO — SUPABASE SXEMASI
+-- NEXT BARBER SHOP — SUPABASE SXEMASI
 -- ---------------------------------------------------------------------------
 -- Supabase Dashboard -> SQL Editor -> shu faylni yopishtirib "Run" tugmasini
 -- bosing. Ustun nomlari js/api.js dagi submitBookingToBackend() bilan bir xil.
