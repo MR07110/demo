@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ELEGANCE BEAUTY — maxsus uslublar
+   NEXT BARBER SHOP — maxsus uslublar
    (Tailwind utility klasslari HTML ichida, bu yerda faqat Tailwind qila
    olmaydigan maxsus effektlar: ticket dizayni, animatsiyalar va h.k.)
    ========================================================================== */
@@ -110,4 +110,4 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { transition: none; opacity: 1; transform: none; }
-}
+   }
