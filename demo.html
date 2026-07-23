@@ -1699,7 +1699,7 @@ body{
  <h4>Nigora Tosheva</h4><span>Kiprik ustasi • 5 yil</span>
  </div>
  <div class="eb-master">
- <img src="https://images.unsplash.com/photo-1519824145371-296894a0daa9?q=80&w=400&auto=format&fit=crop" referrerpolicy="no-referrer" loading="lazy" decoding="async" onerror="this.onerror=null;const d=document.createElement('div');d.className=this.className+' img-fallback';const ic=document.createElement('i');ic.className='fa-solid fa-image';d.appendChild(ic);this.replaceWith(d);">
+ <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop" referrerpolicy="no-referrer" loading="lazy" decoding="async" onerror="this.onerror=null;const d=document.createElement('div');d.className=this.className+' img-fallback';const ic=document.createElement('i');ic.className='fa-solid fa-image';d.appendChild(ic);this.replaceWith(d);">
  <h4>Shahnoza Nazarova</h4><span>SPA/Massaj ustasi • 9 yil</span>
  </div>
  </div>
@@ -2439,7 +2439,9 @@ async function sendTelegramNotification(text){
  // Reels tezligi: barcha animatsiya/pauza vaqtlari shu koeffitsientga ko'paytiriladi
  // (1 = asl tezlik, kichikroq son = tezroq sur'at). Hook/CTA/chip kabi"to'xtab turadigan"
  // ekranlar buning ta'sirida qolmasligi uchun alohida rawSleep() ishlatiladi.
- const SPEED = 1.15;
+ // Odam kabi tabiiy, shoshilmasdan ko'rib chiquvchi sur'at uchun standart 1.15'dan
+ // biroz sekinlashtirildi.
+ const SPEED = 1.4;
 
  let playing = false;
  let runToken = 0;
