@@ -26,11 +26,11 @@ async function notifyTelegram(row) {
   }
 
   const text =
-    `💇 <b>YANGI BRON!</b>\n\n` +
+    `💈 <b>YANGI BRON!</b>\n\n` +
     `👤 <b>Mijoz:</b> ${row.client_name}\n` +
     `📞 <b>Telefon:</b> ${row.client_phone}\n` +
-    `💅 <b>Xizmat:</b> ${row.service_name}\n` +
-    `🧑‍🎨 <b>Usta:</b> ${row.master_name}\n` +
+    `✂️ <b>Xizmat:</b> ${row.service_name}\n` +
+    `🧑‍🦱 <b>Barber:</b> ${row.master_name}\n` +
     `📅 <b>Sana:</b> ${row.booking_date} ${row.booking_time}\n` +
     `💰 <b>Narx:</b> ${Number(row.price).toLocaleString('uz-UZ')} so'm\n` +
     `⏱ <b>Davomiyligi:</b> ${row.duration} daqiqa`;
@@ -107,4 +107,4 @@ export async function submitBookingToBackend({ service, master, date, time, name
   await notifyTelegram(row);
 
   return row;
-}
+    }
