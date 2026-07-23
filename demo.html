@@ -1462,6 +1462,65 @@ body{
 .value-chip b{ color:#7dd3fc; }
 .value-chip i{ color:#7dd3fc; }
 
+/* ---- Hook intro / End CTA: to'liq ekranli sahnalar, #screenOuter ichida ----
+ Bular #screenOuter ning to'g'ridan-to'g'ri farzandi bo'lgani uchun,
+ video yozib olinganda (fullscreen rejimda) ham ko'rinadi va yoziladi —
+ caption-bar yoki viral-footer-banner kabi yashirilmaydi. */
+.hook-cta-scene{
+ position:absolute; inset:0; z-index:120;
+ display:flex; flex-direction:column; align-items:center; justify-content:center;
+ gap:clamp(10px,3cqi,18px);
+ text-align:center;
+ padding:9% 8%;
+ background:
+ radial-gradient(900px 500px at 50% 0%, rgba(100,37,240,.35) 0%, transparent 60%),
+ linear-gradient(180deg, #0b0c10, #16181f);
+ opacity:0; pointer-events:none; transform:scale(1.04);
+ transition:opacity .38s ease, transform .5s cubic-bezier(.28,1.15,.4,1);
+}
+.hook-cta-scene.show{ opacity:1; transform:scale(1); }
+.hook-cta-scene .hc-eyebrow{
+ display:inline-flex; align-items:center; gap:7px;
+ font-family:'Manrope',sans-serif; font-weight:700;
+ font-size:clamp(11px,3cqi,13px); letter-spacing:1.4px; text-transform:uppercase;
+ color:#7dd3fc; background:rgba(56,189,248,.12); border:1px solid rgba(56,189,248,.3);
+ padding:6px 14px; border-radius:20px;
+}
+.hook-cta-scene h2{
+ margin:0; color:#fff; font-family:'Manrope',sans-serif; font-weight:800;
+ font-size:clamp(21px,7.2cqi,34px); line-height:1.18;
+}
+.hook-cta-scene h2 span{
+ background:linear-gradient(90deg,#7dd3fc,#a78bfa);
+ -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.hook-cta-scene p{
+ margin:0; color:rgba(255,255,255,.62); font-family:'Manrope',sans-serif;
+ font-size:clamp(12.5px,3.6cqi,15px); max-width:520px; line-height:1.5;
+}
+.hook-cta-scene .hc-logos{
+ display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:clamp(8px,2.4cqi,14px);
+ margin-top:2px;
+}
+.hook-cta-scene .hc-logos span{
+ font-family:'Manrope',sans-serif; font-weight:700; color:rgba(255,255,255,.85);
+ font-size:clamp(10.5px,2.8cqi,12.5px);
+ background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+ padding:6px 12px; border-radius:8px;
+}
+.hook-cta-scene .hc-btn{
+ display:inline-flex; align-items:center; gap:9px;
+ font-family:'Manrope',sans-serif; font-weight:800;
+ font-size:clamp(13px,3.6cqi,16px);
+ color:#fff; background:linear-gradient(135deg,#6425f0,#3fa9f5);
+ padding:13px 26px; border-radius:30px; margin-top:6px;
+ box-shadow:0 12px 30px -10px rgba(100,37,240,.65);
+}
+.hook-cta-scene .hc-contact{
+ font-family:'Manrope',sans-serif; font-weight:700; color:#7dd3fc;
+ font-size:clamp(12px,3.2cqi,14.5px); letter-spacing:.3px;
+}
+
 /* ---- Sahnalar orasida tez o'tish (flash) effekti ---- */
 @keyframes scene-flash-anim{
  0%{ filter:brightness(1) saturate(1); }
@@ -1581,6 +1640,26 @@ body{
  <div class="screen-outer" id="screenOuter" data-theme="elegance">
  <div class="live-popup-layer" id="livePopupLayer"></div>
  <div class="value-chip" id="valueChip"><i class="fa-solid fa-bolt"></i> <span>Bu sayt — <b>2 kunda</b> tayyor</span></div>
+
+ <!-- Video yozib olinganda boshida ko'rsatiladigan "hook" ekrani (faqat yozib olishda ishlatiladi) -->
+ <div class="hook-cta-scene" id="hookIntroScene">
+ <div class="hc-eyebrow"><i class="fa-solid fa-bolt"></i> Jonli namoyish</div>
+ <h2>Bunday <span>sayt va bot</span> sizga ham kerakmi?</h2>
+ <p>4 ta haqiqiy loyiha — mijoz ko'zi bilan, boshidan oxirigacha</p>
+ <div class="hc-logos">
+ <span>Beauty salon</span><span>Onlayn do'kon</span><span>Kurs markazi</span><span>Fast-food</span>
+ </div>
+ </div>
+
+ <!-- Video oxirida ko'rsatiladigan CTA ekrani (faqat yozib olishda ishlatiladi) -->
+ <div class="hook-cta-scene" id="endCtaScene">
+ <div class="hc-eyebrow"><i class="fa-solid fa-check"></i> Tayyor</div>
+ <h2>Sizga ham <span>shunday sayt</span> kerakmi?</h2>
+ <p>2 kun ichida tayyor — dizayndan botgacha, hammasi</p>
+ <div class="hc-btn"><i class="fa-brands fa-telegram"></i> Telegram'da buyurtma bering</div>
+ <div class="hc-contact">@ +998 91 605 53 10</div>
+ </div>
+
  <div class="screen-scroll" id="screenScroll">
  <!-- ============== SCENE 1: ELEGANCE BEAUTY ============== -->
  <div class="scene elegance active" id="scene-elegance">
@@ -2435,6 +2514,8 @@ async function sendTelegramNotification(text){
  const nextBtn = document.getElementById('nextBtn');
  const livePopupLayer = document.getElementById('livePopupLayer');
  const valueChip = document.getElementById('valueChip');
+ const hookIntroScene = document.getElementById('hookIntroScene');
+ const endCtaScene = document.getElementById('endCtaScene');
 
  // Reels tezligi: barcha animatsiya/pauza vaqtlari shu koeffitsientga ko'paytiriladi
  // (1 = asl tezlik, kichikroq son = tezroq sur'at). Hook/CTA/chip kabi"to'xtab turadigan"
@@ -3609,11 +3690,25 @@ async function sendTelegramNotification(text){
  const recordingFinished = new Promise(resolve=>{ recorder.onstop = resolve; });
  recorder.start(250);
 
+ // Hook: yozib olish AllAKACHON boshlangan, shuning uchun bu ekran ham videoga tushadi.
+ // rawSleep ishlatiladi — SPEED koeffitsientidan mustaqil, doim bir xil (fixed) davomiylikda.
+ hookIntroScene.classList.add('show');
+ await rawSleep(2200);
+ hookIntroScene.classList.remove('show');
+ await rawSleep(400);
+
  const startIdx = ctxInfo.mode === 'single' ? ctxInfo.idx : 0;
  const stopIdx = ctxInfo.mode === 'single' ? ctxInfo.idx : projects.length - 1;
 
  playProject(startIdx);
  await waitForProjectsDone(stopIdx);
+
+ // End CTA: loyihalar tugagach, recorder hali ishlayotgan paytda ko'rsatiladi —
+ // shuning uchun bu ham videoning bir qismi bo'lib qoladi.
+ endCtaScene.classList.add('show');
+ await rawSleep(2800);
+ endCtaScene.classList.remove('show');
+ await rawSleep(250);
 
  if(rafId) cancelAnimationFrame(rafId);
  try{ recorder.stop(); }catch(e){}
