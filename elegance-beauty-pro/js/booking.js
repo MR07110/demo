@@ -69,7 +69,7 @@ function populateDateSelects() {
 }
 
 const stepLabels = {
-  1: '1-qadam / 4 — Xizmat va usta',
+  1: '1-qadam / 4 — Xizmat va barber',
   2: '2-qadam / 4 — Sana va vaqt',
   3: "3-qadam / 4 — Aloqa ma'lumotlari",
   4: '4-qadam / 4 — Tasdiqlash',
@@ -278,7 +278,7 @@ function renderSummary() {
   const master = MASTERS.find(m => m.id === state.masterId);
 
   document.getElementById('sumService').textContent = service?.name || '—';
-  document.getElementById('sumMaster').textContent = master ? `Usta: ${master.name}` : '—';
+  document.getElementById('sumMaster').textContent = master ? `Barber: ${master.name}` : '—';
   document.getElementById('sumDate').textContent = formatDateUz(state.date);
   document.getElementById('sumTime').textContent = state.time || '—';
   document.getElementById('sumClient').textContent = state.name || '—';
@@ -358,4 +358,4 @@ export function initBookingModal() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !modal().classList.contains('hidden')) closeBooking();
   });
-}
+        }
