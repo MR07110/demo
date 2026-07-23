@@ -558,19 +558,64 @@ body{
  border-radius:30px; font-weight:700; font-size:12.5px; font-family:inherit; cursor:default;
 }
 .eb-hero{
- padding:56px 26px 48px;
+ position:relative;
+ overflow:hidden;
+ padding:56px 26px 52px;
  background:linear-gradient(160deg,#0E4B3A,#0B3B2E 70%);
  color:#FAF8F3;
- text-align:center;
 }
+.eb-hero-inner{
+ position:relative; z-index:1;
+ display:grid; grid-template-columns:1.35fr 1fr; gap:36px; align-items:center;
+ max-width:1000px; margin:0 auto;
+}
+@container stage (max-width: 620px){
+ .eb-hero-inner{ grid-template-columns:1fr; }
+}
+.eb-hero-text{ text-align:left; }
 .eb-hero h1{ font-size:clamp(24px,4vw,38px); margin:0 0 14px; font-weight:600; }
-.eb-hero h1 em{ color:#E8D48A; font-style:normal; }
-.eb-hero p{ opacity:.8; max-width:480px; margin:0 auto 22px; font-size:14px; }
+.eb-hero h1 em{ color:#D9BB5C; font-style:normal; }
+.eb-hero p{ opacity:.8; max-width:440px; margin:0 0 22px; font-size:14px; }
 .eb-btn-primary{
  background:#C9A227; color:#0B3B2E; border:none; padding:13px 26px;
  border-radius:30px; font-weight:800; font-size:13.5px; font-family:inherit; cursor:default;
  transition:transform .15s;
 }
+.eb-hero-stats{
+ display:flex; align-items:center; gap:22px;
+ margin-top:30px; padding-top:20px; border-top:1px solid rgba(250,248,243,.12);
+}
+.eb-hero-stats .eb-stat-num{ font-family:'Playfair Display',serif; font-size:22px; font-weight:600; color:#D9BB5C; }
+.eb-hero-stats .eb-stat-label{ font-size:10px; color:rgba(250,248,243,.6); letter-spacing:.3px; margin-top:2px; }
+.eb-hero-stats .eb-stat-div{ width:1px; height:28px; background:rgba(250,248,243,.15); }
+.eb-ticket-wrap{ display:flex; justify-content:center; }
+.eb-ticket{
+ position:relative;
+ background:#0B3B2E;
+ border-left:2px dashed rgba(201,162,39,.5);
+ border-radius:16px;
+ box-shadow:0 20px 50px -20px rgba(11,59,46,.6);
+ padding:20px 22px;
+ width:100%; max-width:280px;
+ color:#FAF8F3;
+}
+.eb-ticket::before, .eb-ticket::after{
+ content:''; position:absolute; top:50%; transform:translateY(-50%);
+ width:18px; height:18px; background:#FAF8F3; opacity:.14; border-radius:50%; z-index:2;
+}
+.eb-ticket::before{ left:-11px; }
+.eb-ticket::after{ right:-11px; }
+.eb-ticket-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+.eb-ticket-eyebrow{ font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:#D9BB5C; }
+.eb-ticket-title{ font-family:'Playfair Display',serif; font-size:17px; margin:0 0 4px; }
+.eb-ticket-sub{ font-size:12px; color:rgba(250,248,243,.6); margin-bottom:14px; }
+.eb-ticket-hairline{ height:1px; background:linear-gradient(90deg,transparent,#C9A227,transparent); margin-bottom:14px; }
+.eb-ticket-row{ display:flex; justify-content:space-between; font-size:12px; margin-bottom:8px; }
+.eb-ticket-row span:first-child{ color:rgba(250,248,243,.6); }
+.eb-ticket-row span:last-child{ font-family:'JetBrains Mono',monospace; }
+.eb-ticket-foot{ display:flex; justify-content:space-between; align-items:center; margin-top:12px; }
+.eb-ticket-foot .eb-ticket-no{ font-size:10.5px; color:rgba(250,248,243,.5); }
+.eb-ticket-foot .eb-ticket-price{ font-family:'Playfair Display',serif; font-size:16px; color:#D9BB5C; }
 .eb-services, .eb-masters{ padding:48px 26px; }
 .eb-services h2, .eb-masters h2{ text-align:center; font-size:24px; margin:0 0 28px; color:#0B3B2E; font-weight:600;}
 .eb-grid{
@@ -601,6 +646,51 @@ body{
 .eb-master img{ width:100%; aspect-ratio:1; object-fit:cover; border-radius:14px; margin-bottom:10px; }
 .eb-master h4{ margin:0; font-size:13.5px; font-family:'Manrope',sans-serif; font-weight:700; }
 .eb-master span{ font-size:11px; color:#6b6558; }
+
+.eb-why{ padding:48px 26px; background:#FAF8F3; }
+.eb-why-grid{
+ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:26px; max-width:900px; margin:0 auto;
+}
+.eb-why-item i{ font-size:20px; color:#C9A227; margin-bottom:12px; display:block; }
+.eb-why-item h3{ font-size:15.5px; margin:0 0 6px; color:#0B3B2E; font-weight:600; }
+.eb-why-item p{ font-size:12.5px; color:#6b6558; line-height:1.5; margin:0; }
+
+.eb-cta-strip{
+ background:#C9A227; color:#0B3B2E;
+ padding:30px 26px;
+ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px;
+ max-width:920px; margin:0 auto;
+}
+.eb-cta-strip h3{ font-size:19px; margin:0; font-weight:600; }
+.eb-cta-strip .eb-btn-primary{ background:#0B3B2E; color:#FAF8F3; }
+
+.eb-footer{ background:#0B3B2E; color:#FAF8F3; padding:44px 26px 22px; }
+.eb-footer-grid{
+ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:30px;
+ max-width:980px; margin:0 auto 30px;
+}
+.eb-footer-brand{ display:flex; align-items:center; gap:8px; margin-bottom:12px; font-weight:700; font-size:14px; letter-spacing:.4px; }
+.eb-footer-brand span{ color:#D9BB5C; }
+.eb-footer-brand i{ width:28px; height:28px; border:1px solid #D9BB5C; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#D9BB5C; font-size:11px; }
+.eb-footer-col p{ font-size:12px; color:rgba(250,248,243,.6); line-height:1.6; margin:0 0 12px; }
+.eb-footer-social{ display:flex; gap:8px; }
+.eb-footer-social a{
+ width:28px; height:28px; border-radius:50%; border:1px solid rgba(250,248,243,.2);
+ display:flex; align-items:center; justify-content:center; color:#FAF8F3; font-size:11px; text-decoration:none;
+}
+.eb-footer h4{ font-family:'Playfair Display',serif; font-size:14.5px; font-weight:600; margin:0 0 14px; }
+.eb-footer-hours{ list-style:none; margin:0 0 10px; padding:0; font-family:'JetBrains Mono',monospace; font-size:11.5px; color:rgba(250,248,243,.65); }
+.eb-footer-hours li{ display:flex; justify-content:space-between; max-width:190px; margin-bottom:8px; }
+.eb-footer-note{ font-size:10.5px; color:rgba(250,248,243,.4); line-height:1.5; }
+.eb-footer-link{ display:inline-flex; align-items:center; gap:7px; color:#D9BB5C; font-size:12px; font-weight:600; text-decoration:none; }
+.eb-footer-contact{ list-style:none; margin:0; padding:0; font-size:12px; color:rgba(250,248,243,.65); }
+.eb-footer-contact li{ display:flex; align-items:center; gap:9px; margin-bottom:10px; }
+.eb-footer-contact i{ color:#D9BB5C; width:14px; text-align:center; }
+.eb-footer-bottom{
+ max-width:980px; margin:0 auto; padding-top:18px; border-top:1px solid rgba(250,248,243,.1);
+ display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px;
+ font-size:10.5px; color:rgba(250,248,243,.4);
+}
 
 .eb-modal-overlay{
  position:absolute; inset:0; background:rgba(11,59,46,.55);
@@ -1477,9 +1567,38 @@ body{
  <button class="eb-btn-nav">Bron qilish</button>
  </header>
  <section class="eb-hero">
+ <div class="eb-hero-inner">
+ <div class="eb-hero-text">
  <h1>Go'zalligingiz — <em>bizning san'atimiz</em></h1>
  <p>Toshkentdagi eng nafis go'zallik saloni. Professional ustalar, premium mahsulotlar, onlayn bron.</p>
  <button class="eb-btn-primary">Hoziroq bron qiling</button>
+ <div class="eb-hero-stats">
+ <div><div class="eb-stat-num">12+</div><div class="eb-stat-label">yillik tajriba</div></div>
+ <div class="eb-stat-div"></div>
+ <div><div class="eb-stat-num">8</div><div class="eb-stat-label">mutaxassis usta</div></div>
+ <div class="eb-stat-div"></div>
+ <div><div class="eb-stat-num">4.9</div><div class="eb-stat-label">mijozlar bahosi</div></div>
+ </div>
+ </div>
+ <div class="eb-ticket-wrap">
+ <div class="eb-ticket">
+ <div class="eb-ticket-top">
+ <span class="eb-ticket-eyebrow">Bron chiptasi</span>
+ <i class="fa-solid fa-scissors" style="color:#D9BB5C;"></i>
+ </div>
+ <div class="eb-ticket-title">Ayollar soch turmagi</div>
+ <div class="eb-ticket-sub">Usta: Alisher Yusupov</div>
+ <div class="eb-ticket-hairline"></div>
+ <div class="eb-ticket-row"><span>Sana</span><span>24-iyul, Payshanba</span></div>
+ <div class="eb-ticket-row"><span>Vaqt</span><span>14:30</span></div>
+ <div class="eb-ticket-row"><span>Davomiyligi</span><span>60 daqiqa</span></div>
+ <div class="eb-ticket-foot">
+ <span class="eb-ticket-no">№ 00427</span>
+ <span class="eb-ticket-price">250 000 so'm</span>
+ </div>
+ </div>
+ </div>
+ </div>
  </section>
  <section class="eb-services" id="eb-services">
  <h2>Xizmatlarimiz</h2>
@@ -1553,6 +1672,70 @@ body{
  </div>
  </div>
  </section>
+
+ <section class="eb-why">
+ <div class="eb-why-grid">
+ <div class="eb-why-item">
+ <i class="fa-solid fa-leaf"></i>
+ <h3>Premium mahsulotlar</h3>
+ <p>Faqat sertifikatlangan, yuqori sifatli professional kosmetika bilan ishlaymiz.</p>
+ </div>
+ <div class="eb-why-item">
+ <i class="fa-solid fa-user-check"></i>
+ <h3>Tajribali ustalar</h3>
+ <p>Jamoamiz muntazam malaka oshirish kurslaridan o'tadi va zamonaviy texnikalarni qo'llaydi.</p>
+ </div>
+ <div class="eb-why-item">
+ <i class="fa-solid fa-bolt"></i>
+ <h3>Tezkor onlayn bron</h3>
+ <p>Bir necha bosishda o'zingizga qulay vaqtni tanlang — navbatda kutish shart emas.</p>
+ </div>
+ </div>
+ </section>
+
+ <section class="eb-cta-strip">
+ <h3>Bugunoq o'zingizga vaqt ajrating</h3>
+ <button class="eb-btn-primary">Navbatga yozilish <i class="fa-solid fa-arrow-right" style="font-size:11px;margin-left:4px;"></i></button>
+ </section>
+
+ <footer class="eb-footer">
+ <div class="eb-footer-grid">
+ <div class="eb-footer-col">
+ <div class="eb-footer-brand"><i class="fa-solid fa-spa"></i> ELEGANCE <span>BEAUTY</span></div>
+ <p>Sizning go'zalligingiz — bizning ustunligimiz. Premium go'zallik saloni xizmatlari.</p>
+ <div class="eb-footer-social">
+ <a><i class="fa-brands fa-instagram"></i></a>
+ <a><i class="fa-brands fa-telegram"></i></a>
+ <a><i class="fa-brands fa-facebook-f"></i></a>
+ </div>
+ </div>
+ <div class="eb-footer-col">
+ <h4>Ish vaqti</h4>
+ <ul class="eb-footer-hours">
+ <li><span>Dush – Shan</span><span>09:00 – 20:00</span></li>
+ <li><span>Yakshanba</span><span>10:00 – 18:00</span></li>
+ </ul>
+ <p class="eb-footer-note">Bayram kunlari ish jadvali o'zgarishi mumkin, iltimos oldindan qo'ng'iroq qiling.</p>
+ </div>
+ <div class="eb-footer-col">
+ <h4>Joylashuv</h4>
+ <p>Toshkent sh., Yunusobod tumani,<br>Amir Temur shoh ko'chasi, 45-uy</p>
+ <a class="eb-footer-link"><i class="fa-solid fa-map-location-dot"></i> Xaritada ko'rish</a>
+ </div>
+ <div class="eb-footer-col">
+ <h4>Aloqa</h4>
+ <ul class="eb-footer-contact">
+ <li><i class="fa-solid fa-phone"></i> +998 90 123 45 67</li>
+ <li><i class="fa-solid fa-envelope"></i> info@elegancebeauty.uz</li>
+ <li><i class="fa-brands fa-telegram"></i> @elegancebeauty_bot</li>
+ </ul>
+ </div>
+ </div>
+ <div class="eb-footer-bottom">
+ <span>© 2026 ELEGANCE BEAUTY. Barcha huquqlar himoyalangan.</span>
+ <span>Onlayn bron tizimi bilan ishlab chiqilgan</span>
+ </div>
+ </footer>
 
  <div class="eb-modal-overlay" id="eb-modal-overlay">
  <div class="eb-modal">
