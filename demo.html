@@ -9,6 +9,9 @@
 <link rel="preconnect" href="https://images.unsplash.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Baloo+2:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<!-- Yozib olingan videoni (WebM/musiqali) Instagram uchun to'g'ridan-to'g'ri MP4'ga
+ aylantirish uchun — hammasi shu sahifaning o'zida, brauzerda ishlaydi, tashqi dastur kerak emas. -->
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 <style>
 i.fa-solid, i.fa-regular, i.fa-brands{ line-height:1; }
 .icon-svg{ display:inline-flex; vertical-align:middle; }
@@ -3515,6 +3518,44 @@ async function sendTelegramNotification(text){
  return 'video/webm';
  }
 
+ // ---- WebM -> MP4 (Instagram uchun) — sahifaning o'zida, hech qanday tashqi dastursiz ----
+ // Ko'pchilik brauzer (ayniqsa musiqa qo'shilganda) faqat WebM formatda yozib oladi,
+ // lekin Instagram MP4/MOV talab qiladi. Shuning uchun yozib olingandan keyin,
+ // fayl avtomatik ravishda shu yerning o'zida (ffmpeg.wasm orqali) MP4'ga o'giriladi —
+ // foydalanuvchi hech narsa qilishi shart emas, tayyor MP4 fayl yuklab olinadi.
+ let ffmpegInstance = null;
+ async function getFFmpegInstance(){
+ if(ffmpegInstance) return ffmpegInstance;
+ const { createFFmpeg } = FFmpeg;
+ ffmpegInstance = createFFmpeg({
+ log:false,
+ corePath:'https://unpkg.com/@ffmpeg/core@0.11.0/dist/ffmpeg-core.js'
+ });
+ await ffmpegInstance.load();
+ return ffmpegInstance;
+ }
+
+ async function convertBlobToMp4(blob, onProgress){
+ const ff = await getFFmpegInstance();
+ const { fetchFile } = FFmpeg;
+ const inName = 'in_' + Date.now() + (blob.type.indexOf('webm') !== -1 ? '.webm' : '.mp4');
+ ff.FS('writeFile', inName, await fetchFile(blob));
+ ff.setProgress(({ratio})=>{
+ if(onProgress && isFinite(ratio)) onProgress(Math.round(Math.max(0, Math.min(1, ratio)) * 100));
+ });
+ await ff.run(
+ '-i', inName,
+ '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2',
+ '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '23', '-pix_fmt', 'yuv420p',
+ '-c:a', 'aac', '-b:a', '128k',
+ '-movflags', '+faststart',
+ 'out.mp4'
+ );
+ const data = ff.FS('readFile', 'out.mp4');
+ try{ ff.FS('unlink', inName); ff.FS('unlink', 'out.mp4'); }catch(e){}
+ return new Blob([data.buffer], { type:'video/mp4' });
+ }
+
  function slugify(s){
  return s.toLowerCase()
  .replace(/[^a-z0-9]+/g,'-')
@@ -3718,15 +3759,39 @@ async function sendTelegramNotification(text){
 
  if(isFs()) await exitFs();
  playerEl.classList.remove('mode-desktop','mode-mobile');
- recordOverlayEl.classList.remove('show');
  playing = wasPlayingBefore;
  activeRecordingAbort = null;
 
- if(cancelled) return;
+ if(cancelled){ recordOverlayEl.classList.remove('show'); return; }
 
- const blob = new Blob(chunks, { type: mimeType });
- const ext = mimeType.indexOf('mp4') !== -1 ? 'mp4' : 'webm';
- triggerDownload(blob, buildFileName(ctxInfo, format, ext));
+ const rawBlob = new Blob(chunks, { type: mimeType });
+
+ // Agar brauzer allaqachon MP4 (H.264) formatda yozgan bo'lsa (masalan Safari,
+ // musiqasiz holatda), qayta o'girishning hojati yo'q — to'g'ridan-to'g'ri yuklab olamiz.
+ if(mimeType.indexOf('mp4') !== -1){
+ recordOverlayEl.classList.remove('show');
+ triggerDownload(rawBlob, buildFileName(ctxInfo, format, 'mp4'));
+ return;
+ }
+
+ // Aks holda (odatda WebM, ayniqsa musiqa qo'shilganda) — Instagram MP4/MOV talab
+ // qilgani uchun, shu sahifaning o'zida (ffmpeg.wasm) MP4'ga aylantiramiz.
+ recordTitleEl.textContent = "MP4'ga o'girilmoqda…";
+ recordSubEl.textContent = "Instagram uchun tayyorlanmoqda — birinchi safar biroz uzoqroq davom etadi.";
+ recordOverlayEl.classList.add('show');
+ try{
+ const mp4Blob = await convertBlobToMp4(rawBlob, (pct)=>{
+ recordSubEl.textContent = "Instagram uchun tayyorlanmoqda… " + pct + "%";
+ });
+ recordOverlayEl.classList.remove('show');
+ triggerDownload(mp4Blob, buildFileName(ctxInfo, format, 'mp4'));
+ }catch(err){
+ recordOverlayEl.classList.remove('show');
+ console.warn('MP4 konvertatsiya xatosi, original fayl yuklab olinadi:', err);
+ const ext = mimeType.indexOf('webm') !== -1 ? 'webm' : 'mp4';
+ triggerDownload(rawBlob, buildFileName(ctxInfo, format, ext));
+ alert("MP4'ga avtomatik o'girib bo'lmadi — original video yuklab olindi. Instagram'ga qo'yishdan oldin uni biror MP4 konvertorda o'girib oling.");
+ }
  }
 
  // kick off
