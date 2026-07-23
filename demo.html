@@ -703,10 +703,16 @@ body{
  transform:translateY(14px) scale(.97); transition:transform .3s; position:relative;
 }
 .eb-modal-overlay.open .eb-modal{ transform:translateY(0) scale(1); }
-.eb-modal h3{ margin:0 0 16px; font-size:19px; color:#0B3B2E; }
+.eb-modal h3{ margin:0 0 4px; font-size:19px; color:#0B3B2E; }
 .eb-modal-close{
  position:absolute; top:14px; right:16px; border:none; background:none; font-size:16px; cursor:default; color:#6b6558;
 }
+.eb-modal-wizard{ width:min(440px,90%); }
+.eb-step-label{ font-size:11px; color:#8a8471; margin:0 0 16px; }
+.eb-progress-dots{ display:flex; gap:6px; margin-bottom:20px; }
+.eb-dot{ height:5px; flex:1; border-radius:4px; background:#e3dcc8; transition:background .25s; }
+.eb-dot.active, .eb-dot.done{ background:#C9A227; }
+.eb-wizard-step.hidden{ display:none; }
 .eb-modal-step{ margin-bottom:16px; }
 .eb-modal-step label{ display:block; font-size:11px; text-transform:uppercase; letter-spacing:.6px; color:#6b6558; margin-bottom:8px; font-weight:700; }
 .eb-selected-chip{ background:#0B3B2E; color:#E8D48A; padding:9px 12px; border-radius:10px; font-size:13px; font-weight:600; }
@@ -722,6 +728,24 @@ body{
  transition:all .15s; cursor:default;
 }
 .eb-slot.selected{ background:#0B3B2E; border-color:#0B3B2E; color:#E8D48A; }
+.eb-date-selects{ display:flex; gap:10px; margin-bottom:16px; }
+.eb-select{
+ flex:1; padding:10px 12px; border-radius:10px; border:1.5px solid #e3dcc8;
+ font-size:12.5px; font-weight:600; color:#3d3a30; font-family:inherit; background:#fff;
+}
+.eb-input{
+ width:100%; box-sizing:border-box; padding:11px 13px; border-radius:10px; border:1.5px solid #e3dcc8;
+ font-size:13px; font-family:inherit; color:#3d3a30; background:#fff; margin-bottom:14px;
+}
+.eb-input::placeholder{ color:#a39d89; }
+.eb-ticket-modal{ margin-bottom:6px; max-width:none; }
+.eb-wizard-nav{ display:flex; gap:10px; margin-top:8px; }
+.eb-wizard-nav button{ flex:1; }
+.eb-btn-outline{
+ background:transparent; color:#0B3B2E; border:1.5px solid #e3dcc8; padding:13px 20px;
+ border-radius:30px; font-weight:700; font-size:13px; font-family:inherit; cursor:default;
+}
+.hidden{ display:none; }
 .eb-modal-confirm{ width:100%; margin-top:6px; }
 .eb-toast{
  position:absolute; top:22px; left:50%; transform:translateX(-50%) translateY(-12px);
@@ -1562,9 +1586,10 @@ body{
  <nav class="eb-links">
  <a id="eb-nav-services">Xizmatlar</a>
  <a id="eb-nav-masters">Ustalar</a>
- <a>Kontakt</a>
+ <a>Joylashuv</a>
+ <a>Aloqa</a>
  </nav>
- <button class="eb-btn-nav">Bron qilish</button>
+ <button class="eb-btn-nav">Navbatga yozilish</button>
  </header>
  <section class="eb-hero">
  <div class="eb-hero-inner">
@@ -1670,6 +1695,10 @@ body{
  <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop" referrerpolicy="no-referrer" loading="lazy" decoding="async" onerror="this.onerror=null;const d=document.createElement('div');d.className=this.className+' img-fallback';const ic=document.createElement('i');ic.className='fa-solid fa-image';d.appendChild(ic);this.replaceWith(d);">
  <h4>Nigora Tosheva</h4><span>Kiprik ustasi • 5 yil</span>
  </div>
+ <div class="eb-master">
+ <img src="https://images.unsplash.com/photo-1519824145371-296894a0daa9?q=80&w=400&auto=format&fit=crop" referrerpolicy="no-referrer" loading="lazy" decoding="async" onerror="this.onerror=null;const d=document.createElement('div');d.className=this.className+' img-fallback';const ic=document.createElement('i');ic.className='fa-solid fa-image';d.appendChild(ic);this.replaceWith(d);">
+ <h4>Shahnoza Nazarova</h4><span>SPA/Massaj ustasi • 9 yil</span>
+ </div>
  </div>
  </section>
 
@@ -1738,9 +1767,19 @@ body{
  </footer>
 
  <div class="eb-modal-overlay" id="eb-modal-overlay">
- <div class="eb-modal">
+ <div class="eb-modal eb-modal-wizard">
  <button class="eb-modal-close"><i class="fa-solid fa-xmark"></i></button>
- <h3>Bronni tasdiqlash</h3>
+ <h3>Navbatga yozilish</h3>
+ <p class="eb-step-label" id="eb-step-label">1-qadam / 4 — Xizmatni tanlang</p>
+ <div class="eb-progress-dots">
+ <div class="eb-dot active" data-dot="1"></div>
+ <div class="eb-dot" data-dot="2"></div>
+ <div class="eb-dot" data-dot="3"></div>
+ <div class="eb-dot" data-dot="4"></div>
+ </div>
+
+ <!-- STEP 1: Xizmat + usta -->
+ <div class="eb-wizard-step" id="eb-wizard-step-1">
  <div class="eb-modal-step">
  <label>Tanlangan xizmat</label>
  <div class="eb-selected-chip">Ayollar soch kesish — 120 000 so'm</div>
@@ -1751,10 +1790,22 @@ body{
  <div class="eb-picker-item" id="pick-madina">Alisher</div>
  <div class="eb-picker-item" id="pick-dilnoza">Dilnoza</div>
  <div class="eb-picker-item" id="pick-zarina">Zarina</div>
+ <div class="eb-picker-item" id="pick-jasur">Jasur</div>
+ </div>
+ </div>
+ </div>
+
+ <!-- STEP 2: Sana va vaqt -->
+ <div class="eb-wizard-step hidden" id="eb-wizard-step-2">
+ <div class="eb-modal-step">
+ <label>Sanani tanlang</label>
+ <div class="eb-date-selects">
+ <select class="eb-select" id="eb-day-select"><option>24</option><option>25</option><option>26</option></select>
+ <select class="eb-select" id="eb-month-select"><option>Iyul</option><option>Avgust</option></select>
  </div>
  </div>
  <div class="eb-modal-step">
- <label>Vaqtni tanlang — 24-iyul, Payshanba</label>
+ <label>Bo'sh vaqtni tanlang — 24-iyul, Payshanba</label>
  <div class="eb-time-slots">
  <div class="eb-slot">10:00</div>
  <div class="eb-slot" id="slot-1130">11:30</div>
@@ -1762,7 +1813,45 @@ body{
  <div class="eb-slot">15:30</div>
  </div>
  </div>
- <button class="eb-btn-primary eb-modal-confirm" id="eb-confirm-booking">Bronni tasdiqlash</button>
+ </div>
+
+ <!-- STEP 3: Kontakt -->
+ <div class="eb-wizard-step hidden" id="eb-wizard-step-3">
+ <div class="eb-modal-step">
+ <label>Ismingiz</label>
+ <input class="eb-input" type="text" id="eb-client-name" placeholder="Ism Familiya" readonly>
+ </div>
+ <div class="eb-modal-step" style="margin-bottom:0;">
+ <label>Telefon raqamingiz</label>
+ <input class="eb-input" type="tel" id="eb-client-phone" placeholder="+998 90 123 45 67" readonly>
+ </div>
+ </div>
+
+ <!-- STEP 4: Tasdiqlash (ticket) -->
+ <div class="eb-wizard-step hidden" id="eb-wizard-step-4">
+ <div class="eb-ticket eb-ticket-modal">
+ <div class="eb-ticket-top">
+ <span class="eb-ticket-eyebrow">Bron xulosasi</span>
+ <i class="fa-solid fa-check-circle" style="color:#D9BB5C;"></i>
+ </div>
+ <div class="eb-ticket-title">Ayollar soch kesish</div>
+ <div class="eb-ticket-sub" id="eb-sum-master">Usta: Alisher Yusupov</div>
+ <div class="eb-ticket-hairline"></div>
+ <div class="eb-ticket-row"><span>Sana</span><span id="eb-sum-date">24-iyul, Payshanba</span></div>
+ <div class="eb-ticket-row"><span>Vaqt</span><span id="eb-sum-time">11:30</span></div>
+ <div class="eb-ticket-row"><span>Mijoz</span><span id="eb-sum-client">—</span></div>
+ <div class="eb-ticket-row"><span>Telefon</span><span id="eb-sum-phone">—</span></div>
+ <div class="eb-ticket-foot">
+ <span class="eb-ticket-no">45 daqiqa</span>
+ <span class="eb-ticket-price">120 000 so'm</span>
+ </div>
+ </div>
+ </div>
+
+ <div class="eb-wizard-nav">
+ <button class="eb-btn-outline hidden" id="eb-back-btn">Orqaga</button>
+ <button class="eb-btn-primary eb-modal-confirm" id="eb-next-btn">Davom etish</button>
+ <button class="eb-btn-primary eb-modal-confirm hidden" id="eb-confirm-booking">Bron qilish</button>
  </div>
  </div>
  <div class="eb-toast" id="eb-toast"><i class="fa-solid fa-circle-check"></i> Bron muvaffaqiyatli qabul qilindi!</div>
@@ -2597,6 +2686,28 @@ async function sendTelegramNotification(text){
  /* Eslatma: bu bubble endi doimiy fonda takrorlanmaydi — faqat buyurtma
  muvaffaqiyatli yakunlangan lahzada (celebrateSuccess ichida) bir marta chiqadi. */
 
+ /* Elegance Beauty: 4 bosqichli bron wizard'ini boshqarish */
+ function ebGoToStep(n){
+ for(let i=1;i<=4;i++){
+ id('eb-wizard-step-'+i).classList.toggle('hidden', i!==n);
+ }
+ document.querySelectorAll('#eb-modal-overlay .eb-dot').forEach(d=>{
+ const dn = parseInt(d.dataset.dot);
+ d.classList.toggle('active', dn===n);
+ d.classList.toggle('done', dn<n);
+ });
+ const labels = {
+ 1:"1-qadam / 4 — Xizmatni tanlang",
+ 2:"2-qadam / 4 — Sana va vaqtni tanlang",
+ 3:"3-qadam / 4 — Kontakt ma'lumotlari",
+ 4:"4-qadam / 4 — Tasdiqlash"
+ };
+ id('eb-step-label').textContent = labels[n];
+ id('eb-back-btn').classList.toggle('hidden', n===1);
+ id('eb-next-btn').classList.toggle('hidden', n===4);
+ id('eb-confirm-booking').classList.toggle('hidden', n!==4);
+ }
+
  /* ===================== PROJECT DEFINITIONS ===================== */
  const projects = [];
 
@@ -2608,6 +2719,9 @@ async function sendTelegramNotification(text){
  id('eb-modal-overlay').classList.remove('open');
  id('eb-toast').classList.remove('show');
  scene.querySelectorAll('.eb-picker-item, .eb-slot').forEach(e=>e.classList.remove('selected'));
+ id('eb-client-name').value=''; id('eb-client-phone').value='';
+ id('eb-sum-client').textContent='—'; id('eb-sum-phone').textContent='—';
+ ebGoToStep(1);
  },
  steps:[
  { caption:"Birinchi taassurot muhim mijoz saytni ko'zdan kechirmoqda",
@@ -2626,17 +2740,29 @@ async function sendTelegramNotification(text){
  await moveCursorTo(id('master-madina'), 450);
  await moveCursorTo(id('master-dilnoza'), 400);
  } },
- { caption:"«Ayollar soch kesish»ni tanlab, <b>Bron qilish</b>ga bosadi",
+ { caption:"«Ayollar soch kesish»ni tanlab, <b>Navbatga yozilish</b>ga bosadi",
  run: async(scene)=>{
  await scrollSceneTo(scene, id('eb-services'));
  await goAndClick(id('eb-book-haircut'), '#C9A227');
  id('eb-modal-overlay').classList.add('open'); await sleep(250);
  } },
- { caption:"Sevimli ustasini tanlaydi — <b>Alisher Yusupov</b>",
+ { caption:"1-qadam: sevimli ustasini tanlaydi — <b>Alisher Yusupov</b>",
  run: async(scene)=>{ await goAndClick(id('pick-madina'), '#C9A227'); id('pick-madina').classList.add('selected'); } },
- { caption:"Qulay vaqtni belgilaydi — <b>11:30</b>",
+ { caption:"<b>Davom etish</b>ga bosib, sana va vaqt tanlashga o'tadi",
+ run: async(scene)=>{ await goAndClick(id('eb-next-btn'), '#C9A227'); ebGoToStep(2); } },
+ { caption:"2-qadam: sanani va qulay vaqtni belgilaydi — <b>24-iyul, 11:30</b>",
  run: async(scene)=>{ await goAndClick(id('slot-1130'), '#C9A227'); id('slot-1130').classList.add('selected'); } },
- { caption:"Bir bosish — va tayyor!",
+ { caption:"<b>Davom etish</b>ga bosib, kontakt ma'lumotlarini kiritishga o'tadi",
+ run: async(scene)=>{ await goAndClick(id('eb-next-btn'), '#C9A227'); ebGoToStep(3); } },
+ { caption:"3-qadam: ism va telefon raqamini kiritadi",
+ run: async(scene)=>{
+ await moveCursorTo(id('eb-client-name'),400); await typeInto(id('eb-client-name'), 'Kamola Yusupova');
+ await moveCursorTo(id('eb-client-phone'),400); await typeInto(id('eb-client-phone'), '+998 90 123 45 67');
+ id('eb-sum-client').textContent='Kamola Yusupova'; id('eb-sum-phone').textContent='+998 90 123 45 67';
+ } },
+ { caption:"<b>Davom etish</b>ga bosib, bronni ko'rib chiqadi",
+ run: async(scene)=>{ await goAndClick(id('eb-next-btn'), '#C9A227'); ebGoToStep(4); } },
+ { caption:"4-qadam: chipta ko'rinishidagi xulosani tekshiradi va tasdiqlaydi",
  run: async(scene)=>{
  await goAndClick(id('eb-confirm-booking'), '#C9A227');
  id('eb-modal-overlay').classList.remove('open');
@@ -2652,11 +2778,13 @@ async function sendTelegramNotification(text){
  'Xizmat: Ayollar soch kesish (120 000 so\'m)\n'+
  'Usta: Alisher Yusupov\n'+
  'Sana/vaqt: 24-iyul, Payshanba, 11:30\n'+
+ 'Mijoz: Kamola Yusupova, +998 90 123 45 67\n'+
  'Manba: Jonli namoyish demo'
  });
  } },
  ]
  });
+
 
  // ---------- 2. LUMEN STORE ----------
  projects.push({
